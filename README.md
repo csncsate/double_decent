@@ -1,2 +1,4 @@
-# double_decent
-Double Descent in GCNs
+# About
+
+This is the source code for the bachelor thesis "Double Descent in Graph Neural Networks"
+
