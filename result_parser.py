@@ -91,28 +91,3 @@ def load_result_json(filename):
         data_loaded = json.load(f)
     return defaultdict(dict, {ast.literal_eval(key): value for key, value in data_loaded.items()})
 
-    # aggregated_stats = parse_sweep_results("/Double Descent in GNNs/60b1eqk7", "training_ratio")
-    # num_rows = len(aggregated_stats) // 4
-    # num_cols = 4
-    #
-    # # Create a figure with subplots
-    # fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 10), sharex=True, sharey='row')
-    #
-    # # Flatten the axes array for easy iteration
-    # axes = axes.flatten()
-    #
-    # # Iterate over each configuration and plot on a separate subplot
-    # for i, (config, ratios_stats) in enumerate(aggregated_stats.items()):
-    #     create_plot_for_config(config, ratios_stats, "Training ratio", axes[i])
-    #
-    # # Define custom handles for the shared legend
-    # test_loss_handle = mlines.Line2D([], [], color='red', marker='o', label='Test Loss')
-    # accuracy_handle = mlines.Line2D([], [], color='black', marker='o', label='Accuracy')
-    # train_loss_handle = mlines.Line2D([], [], color='blue', marker='o', label='Train Loss')
-    #
-    # # Place a shared legend above the subplots
-    # fig.legend(handles=[test_loss_handle, accuracy_handle, train_loss_handle], loc='upper center', ncol=3, frameon=False)
-    #
-    # # Adjust the layout
-    # fig.tight_layout(rect=[0, 0.03, 1, 0.95])
-    # plt.show()
