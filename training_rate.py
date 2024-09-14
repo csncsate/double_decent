@@ -8,13 +8,13 @@ from arg_parser import load_model, load_dataset, load_loss_function
 # Define sweep config
 sweep_configuration = {
     "method": "grid",
-    "name": "training_ratio - ensemble - csbm - l=0,g=3,m=1,e=1k",
+    "name": "training_ratio - different datasets - gcn-1l",
     "metric": {"goal": "minimize", "name": "test_loss"},
     "parameters": {
-        "dataset": {"values": ["csbm"]},
-        "model": {"values": ["gcn-1l", "gcn-2l", "gcn-2l-do", "gat-1l", "gat-2l"]},
+        "dataset": {"values": ["cora", "chameleon", "citeseer"]},
+        "model": {"values": ["gcn-1l"]},
         "loss": {"values": ["mse", "cross-entropy"]},
-        "seed": {"min": 1, "max": 2},
+        "seed": {"min": 1, "max": 10},
     },
 }
 
@@ -32,8 +32,9 @@ def main():
     eval_loss = load_loss_function(wandb.config.loss)
 
     for training_ratio in training_ratios:
+        torch.manual_seed(wandb.config.seed + training_ratio * 10000 + 100)
         graph.to(device)
-        model = load_model(wandb.config.model, graph, num_classes, device)
+        model = load_model(wandb.config.model, graph, num_classes, device, wandb.config.seed)
         train_test_split(graph, num_classes, training_ratio)
         test_loss, test_acc, train_loss = train(model, graph, eval_loss)
 

@@ -5,8 +5,9 @@ import torch.nn.functional as F
 
 # Defining the Graph Convolutional Network
 class GCNTwoLayerReLu(torch.nn.Module):
-    def __init__(self, num_features, num_classes, num_hidden_channels, dropout=False):
+    def __init__(self, num_features, num_classes, num_hidden_channels, dropout=False, seed=0):
         super().__init__()
+        torch.manual_seed(seed)
         self.conv1 = GCNConv(num_features, num_hidden_channels)
         self.conv2 = GCNConv(num_hidden_channels, num_classes)
         self.dropout = dropout
@@ -21,8 +22,9 @@ class GCNTwoLayerReLu(torch.nn.Module):
 
 
 class GCNSimple(torch.nn.Module):
-    def __init__(self, num_features, num_classes):
+    def __init__(self, num_features, num_classes, seed=0):
         super().__init__()
+        torch.manual_seed(seed)
         self.conv1 = GCNConv(num_features, num_classes)
 
     def forward(self, x, edge_index):
@@ -31,8 +33,9 @@ class GCNSimple(torch.nn.Module):
 
 
 class GATSimple(torch.nn.Module):
-    def __init__(self, num_features, num_classes):
+    def __init__(self, num_features, num_classes, seed=0):
         super().__init__()
+        torch.manual_seed(seed)
         self.gat1 = GATConv(num_features, num_classes)
 
     def forward(self, x, edge_index):
@@ -41,8 +44,9 @@ class GATSimple(torch.nn.Module):
 
 
 class GATTwoLayer(torch.nn.Module):
-    def __init__(self, num_features, num_classes, num_hidden_channels):
+    def __init__(self, num_features, num_classes, num_hidden_channels, seed=0):
         super().__init__()
+        torch.manual_seed(seed)
         heads = 8
         self.gat1 = GATConv(num_features, num_hidden_channels, heads)
         self.gat2 = GATConv(num_hidden_channels * heads, num_classes)

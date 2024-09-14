@@ -1,4 +1,6 @@
 import argparse
+
+import wandb
 from torch_geometric.datasets import Planetoid, WikipediaNetwork
 import csbm_generator as csbm
 from model import GCNTwoLayerReLu, GCNSimple, GATTwoLayer, GATSimple
@@ -65,17 +67,17 @@ def load_loss_function(name):
     return eval_loss
 
 
-def load_model(name, graph, num_classes, device, c_hidden_channels=16):
+def load_model(name, graph, num_classes, device, c_hidden_channels=16, seed=0):
     if name == 'gcn-2l':
-        model = GCNTwoLayerReLu(graph.num_node_features, num_classes, c_hidden_channels).to(device)
+        model = GCNTwoLayerReLu(graph.num_node_features, num_classes, c_hidden_channels, seed).to(device)
     elif name == 'gcn-1l':
-        model = GCNSimple(graph.num_node_features, num_classes).to(device)
+        model = GCNSimple(graph.num_node_features, num_classes, seed).to(device)
     elif name == 'gcn-2l-do':
-        model = GCNTwoLayerReLu(graph.num_node_features, num_classes, c_hidden_channels, True).to(device)
+        model = GCNTwoLayerReLu(graph.num_node_features, num_classes, c_hidden_channels, True, seed).to(device)
     elif name == 'gat-2l':
-        model = GATTwoLayer(graph.num_node_features, num_classes, c_hidden_channels).to(device)
+        model = GATTwoLayer(graph.num_node_features, num_classes, c_hidden_channels, seed).to(device)
     elif name == 'gat-1l':
-        model = GATSimple(graph.num_node_features, num_classes).to(device)
+        model = GATSimple(graph.num_node_features, num_classes, seed).to(device)
     else:
         raise ValueError("Invalid model architecture.")
     return model
